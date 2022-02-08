@@ -317,7 +317,7 @@ impl Slab {
         let _nodes: &[AnyNode] = cast_slice(nodes_bytes);
     }
 
-    pub fn parts(&self) -> (&SlabHeader, &[AnyNode]) {
+    fn parts(&self) -> (&SlabHeader, &[AnyNode]) {
         unsafe {
             invariant(self.0.len() < size_of::<SlabHeader>());
             invariant((self.0.as_ptr() as usize) % align_of::<SlabHeader>() != 0);
@@ -332,7 +332,7 @@ impl Slab {
         (header, nodes)
     }
 
-    pub fn parts_mut(&mut self) -> (&mut SlabHeader, &mut [AnyNode]) {
+    fn parts_mut(&mut self) -> (&mut SlabHeader, &mut [AnyNode]) {
         unsafe {
             invariant(self.0.len() < size_of::<SlabHeader>());
             invariant((self.0.as_ptr() as usize) % align_of::<SlabHeader>() != 0);
@@ -347,11 +347,11 @@ impl Slab {
         (header, nodes)
     }
 
-    pub fn header(&self) -> &SlabHeader {
+    fn header(&self) -> &SlabHeader {
         self.parts().0
     }
 
-    pub fn header_mut(&mut self) -> &mut SlabHeader {
+    fn header_mut(&mut self) -> &mut SlabHeader {
         self.parts_mut().0
     }
 
