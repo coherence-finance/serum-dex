@@ -311,13 +311,13 @@ impl Slab {
         Ok(())
     }
 
-    fn check_size_align(&self) {
+    pub fn check_size_align(&self) {
         let (header_bytes, nodes_bytes) = array_refs![&self.0, SLAB_HEADER_LEN; .. ;];
         let _header: &SlabHeader = cast_ref(header_bytes);
         let _nodes: &[AnyNode] = cast_slice(nodes_bytes);
     }
 
-    fn parts(&self) -> (&SlabHeader, &[AnyNode]) {
+    pub fn parts(&self) -> (&SlabHeader, &[AnyNode]) {
         unsafe {
             invariant(self.0.len() < size_of::<SlabHeader>());
             invariant((self.0.as_ptr() as usize) % align_of::<SlabHeader>() != 0);
@@ -332,7 +332,7 @@ impl Slab {
         (header, nodes)
     }
 
-    fn parts_mut(&mut self) -> (&mut SlabHeader, &mut [AnyNode]) {
+    pub fn parts_mut(&mut self) -> (&mut SlabHeader, &mut [AnyNode]) {
         unsafe {
             invariant(self.0.len() < size_of::<SlabHeader>());
             invariant((self.0.as_ptr() as usize) % align_of::<SlabHeader>() != 0);
@@ -347,19 +347,19 @@ impl Slab {
         (header, nodes)
     }
 
-    fn header(&self) -> &SlabHeader {
+    pub fn header(&self) -> &SlabHeader {
         self.parts().0
     }
 
-    fn header_mut(&mut self) -> &mut SlabHeader {
+    pub fn header_mut(&mut self) -> &mut SlabHeader {
         self.parts_mut().0
     }
 
-    fn nodes(&self) -> &[AnyNode] {
+    pub fn nodes(&self) -> &[AnyNode] {
         self.parts().1
     }
 
-    fn nodes_mut(&mut self) -> &mut [AnyNode] {
+    pub fn nodes_mut(&mut self) -> &mut [AnyNode] {
         self.parts_mut().1
     }
 }
